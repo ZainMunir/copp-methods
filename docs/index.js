@@ -79,10 +79,10 @@ function load_buttons() {
 
 function highlight(curr_instruction) {
     document.getElementsByClassName(`selected`)[0].classList.remove("selected");
-    if (curr_instruction == 5 || curr_instruction == 23) {
+    if (curr_instruction == 5 || curr_instruction == 24) {
         document.getElementById(`inst-${9}`).classList.add("selected");
-    } else if (curr_instruction == 13 || curr_instruction == 21) {
-        document.getElementById(`inst-${23}`).classList.add("selected");
+    } else if (curr_instruction == 14 || curr_instruction == 22) {
+        document.getElementById(`inst-${24}`).classList.add("selected");
     } else {
         document.getElementById(`inst-${order[curr_instruction]}`).classList.add("selected");
     }
@@ -106,6 +106,7 @@ var jas = [
     ".var",
     "    c",
     ".end-var",
+    "    BIPUSH 0x40",
     "    LDC_W objref",
     "    ILOAD a",
     "    ILOAD b",
@@ -128,4 +129,4 @@ var jas = [
     ".end-method"
 ]
 
-var order = [4, 5, 6, 7, 8, "9a", 13, 17, 18, 19, 20, 21, 22, "23a", 26, 30, 31, 32, 33, 34, 35, "23b", 24, "9b", 10, 11]
+var order = [4, 5, 6, 7, 8, "9a", 13, 17, 18, 19, 20, 21, 22, 23, "24a", 27, 31, 32, 33, 34, 35, 36, "24b", 25, "9b", 10, 11]
