@@ -180,7 +180,7 @@ var bin_parts = [{
 }, {
     hex: "0000 0024 ",
     abbr: "Location of times_two(...) method (offset bytes into program text",
-    classes: "constant"
+    classes: "constant inst-24a"
 }, {
     hex: "0000 0000 ",
     abbr: "Text Origin",
