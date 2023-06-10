@@ -26,7 +26,8 @@ body {
 #top-container #jasfile {
         height: 100%;
         margin-left: 1vw;
-        width: 20vw;
+        font-size: 1.9vh;
+        width: 25vw;
     }
 #top-container #jasfile .instruction pre {
                 margin: 0;
@@ -38,6 +39,7 @@ body {
             justify-content: space-around;
         }
 #top-container #jasfile #buttons > button {
+                font-size: 2vh ;
                 width: 5vw;
                 cursor: pointer;
             }
@@ -82,7 +84,7 @@ body {
                 color: white;
             }
 #top-container #content-container #page-container {
-            height: 77vh;
+            height: 80vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
@@ -107,10 +109,10 @@ body {
                 width: 11vw;
             }
 #top-container #content-container #stacklist {
-            border-top: 3px solid black;
-            padding: 1vh 0;
+            border-top: 0.3vh solid black;
+            padding: 1vh 0 0 0;
             font-weight: bold;
-            height: 5vh;
+            height: 3vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;

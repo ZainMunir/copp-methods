@@ -1,0 +1,52 @@
+[
+    ".constant",
+    "    objref  0xCAFE",
+    ".end-constant",
+    ".main",
+    ".var",
+    "    random",
+    ".end-var",
+    "    BIPUSH 0x50",
+    "    DUP",
+    "    ISTORE random",
+    "    LDC_W objref",
+    "    BIPUSH 0x10",
+    "    BIPUSH 0x20",
+    "    INVOKEVIRTUAL add",
+    "    OUT",
+    "    HALT",
+    ".end-main",
+    ".method add(a, b)",
+    ".var",
+    "    c",
+    ".end-var",
+    "    BIPUSH 0x40",
+    "    LDC_W objref",
+    "    ILOAD a",
+    "    ILOAD b",
+    "    BIPUSH 0x30",
+    "    ISTORE c",
+    "    IADD",
+    "    INVOKEVIRTUAL times_two",
+    "    IRETURN",
+    ".end-method",
+    ".method times_two(x)",
+    ".var",
+    "    y",
+    ".end-var",
+    "    ILOAD x",
+    "    DUP",
+    "    DUP",
+    "    ISTORE y",
+    "    IADD",
+    "    IRETURN",
+    ".end-method"
+]
+
+
+1dea dfad 0001 0000 0000 000c 0000 cafe  
+0000 0012 0000 0028 0000 0000 0000 0034 
+1050 5936 0013 0000 1010 1020 b600 0164 
+fdff 0003 0001 1040 1300 0015 0115 0210 
+3036 0360 b600 02ac 0002 0001 1501 5959  
+3602 60ac          

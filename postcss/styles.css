@@ -26,7 +26,8 @@ body {
     #jasfile {
         height: 100%;
         margin-left: 1vw;
-        width: 20vw;
+        font-size: 1.9vh;
+        width: 25vw;
         .instruction {
             pre {
                 margin: 0;
@@ -38,6 +39,7 @@ body {
             flex-direction: row;
             justify-content: space-around;
             > button {
+                font-size: 2vh ;
                 width: 5vw;
                 cursor: pointer;
             }
@@ -85,7 +87,7 @@ body {
             }
         }
         #page-container {
-            height: 77vh;
+            height: 80vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
@@ -110,10 +112,10 @@ body {
             div {
                 width: 11vw;
             }
-            border-top: 3px solid black;
-            padding: 1vh 0;
+            border-top: 0.3vh solid black;
+            padding: 1vh 0 0 0;
             font-weight: bold;
-            height: 5vh;
+            height: 3vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;

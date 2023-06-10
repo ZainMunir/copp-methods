@@ -1,4 +1,4 @@
-for i in range(1, 37):
+for i in range(1, 43):
     file_name = f"inst-{i}.html"
     file_content = f'<div id="div-inst-{i}"></div>'
 
