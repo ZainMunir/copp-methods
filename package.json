@@ -1,0 +1,19 @@
+{
+    "name": "copp-methods",
+    "version": "1.0.0",
+    "description": "yep",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "postcss postcss/styles.css -o docs/styles.css",
+      "watch": "postcss postcss/styles.css -o docs/styles.css --watch"
+    },
+    "author": "Zain",
+    "license": "ISC",
+    "devDependencies": {
+      "autoprefixer": "^10.4.13",
+      "postcss": "^8.4.21",
+      "postcss-cli": "^10.1.0",
+      "postcss-nested": "^6.0.1"
+    }
+  }

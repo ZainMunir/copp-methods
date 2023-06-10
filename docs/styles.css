@@ -1,0 +1,91 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+    * h1 {
+        font-size: 5vh;
+        margin-bottom: 2vh;
+    }
+body {
+    background: lightgrey;
+}
+
+#top-container {
+    height: 100vh;
+    width: 100vw;
+    font-size: 2vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+#top-container #jasfile {
+        height: 100%;
+        margin-left: 1vw;
+        width: 20vw;
+    }
+
+#top-container #jasfile .instruction pre {
+                margin: 0;
+            }
+
+#top-container #jasfile .selected {
+            background-color: pink;
+        }
+
+#top-container #content-container {
+        text-align: center;
+        width: 75vw;
+        margin-top: 5vh;
+        height: 95vh;
+    }
+
+#top-container #content-container #page-container {
+            height: 85vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+#top-container #content-container #page-container > div {
+                width: 10vw;
+                display: flex;
+                flex-direction: column-reverse;
+                justify-content: flex-start;
+            }
+
+#top-container #content-container #page-container > div > div {
+                    border: 2px solid black;
+                    border-bottom: 0;
+                    padding: 0.5vh;
+                    font-size: 3vh;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                }
+
+#top-container #content-container #stacklist div {
+                width: 15vw;
+            }
+
+#top-container #content-container #stacklist {
+            border-top: 3px solid black;
+            padding: 1vh 0;
+            font-weight: bold;
+            height: 5vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+}
+
+.both {
+    background-color: lightgreen;
+}
+.base {
+    background-color: palegoldenrod;
+}
+.sp {
+    background-color: lightblue;
+}
