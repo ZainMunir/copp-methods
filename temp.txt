@@ -1,35 +1,83 @@
-[".constant",
-"    objref  0xCAFE",
-".end-constant",
-".main",
-"    LDC_W objref",
-"    BIPUSH 0x10",
-"    BIPUSH 0x20",
-"    INVOKEVIRTUAL add",
-"    OUT",
-"    HALT",
-".end-main",
-".method add(a, b)",
-".var",
-"    c",
-".end-var",
-"    LDC_W objref",
-"    ILOAD a",
-"    ILOAD b",
-"    BIPUSH 0x30",
-"    ISTORE c",
-"    IADD",
-"    INVOKEVIRTUAL times_two",
-"    IRETURN",
-".end-method",
-".method times_two(x)",
-".var",
-"    y",
-".end-var",
-"    ILOAD x",
-"    DUP",
-"    DUP",
-"    ISTORE y",
-"    IADD",
-"    IRETURN",
-".end-method"]
+[
+    ".constant",
+    "    objref  0xCAFE",
+    ".end-constant",
+    ".main",
+    "    BIPUSH 0x00",
+    "    LDC_W objref",
+    "    BIPUSH 0x10",
+    "    BIPUSH 0x20",
+    "    INVOKEVIRTUAL add",
+    "    OUT",
+    "    HALT",
+    ".end-main",
+    ".method add(a, b)",
+    ".var",
+    "    c",
+    ".end-var",
+    "    BIPUSH 0x40",
+    "    LDC_W objref",
+    "    ILOAD a",
+    "    ILOAD b",
+    "    BIPUSH 0x30",
+    "    ISTORE c",
+    "    IADD",
+    "    INVOKEVIRTUAL times_two",
+    "    IRETURN",
+    ".end-method",
+    ".method times_two(x)",
+    ".var",
+    "    y",
+    ".end-var",
+    "    ILOAD x",
+    "    DUP",
+    "    DUP",
+    "    ISTORE y",
+    "    IADD",
+    "    IRETURN",
+    ".end-method"
+]
+
+
+
+1dea dfad //magic
+0001 0000 //const origin
+0000 000c //const size
+0000 cafe //const[0]
+0000 000e //const[1] -> method add(...)
+0000 0024 //const[2] -> method times_two(...)
+0000 0000 //text origin
+0000 0030 //text size
+1000 //bipush 10
+1300 00 //ldc_w objref
+10 10 //bipush 10
+10 20 //bipush 10
+b6 0001 // INVOKEVIRTUAL add
+fd // OUT
+ff // HALT
+0003 //arguments for add
+0001 //area size for add
+1040 //bipush 40 
+1300 00 //ldc_w objref
+15 01 //iload a
+15 02 //iload b
+10 30 //bipush 30
+36 03 //istore 03
+60 //iadd
+b6 00 02 // invokevirual times_two
+ac // ireturn
+0002 //arguments for times_two
+0001 //area size for times_two 
+15 01 //iload x
+59 //dup
+59 //dup
+36 02 //istore y
+60 //iadd
+ac // ireturn
+
+
+1dea dfad 0001 0000 0000 000c 0000 cafe
+0000 000e 0000 0024 0000 0000 0000 0030 
+1000 1300 0010 1010 20b6 0001 fdff 0003 
+0001 1040 1300 0015 0115 0210 3036 0360
+b600 02ac 0002 0001 1501 5959 3602 60ac

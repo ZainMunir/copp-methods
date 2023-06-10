@@ -10,7 +10,10 @@
 body {
     background: lightgrey;
 }
-
+.selected {
+    background-color: red;
+    color: white !important;
+}
 #top-container {
     height: 100vh;
     width: 100vw;
@@ -20,68 +23,75 @@ body {
     justify-content: space-between;
 
 }
-
 #top-container #jasfile {
         height: 100%;
         margin-left: 1vw;
         width: 20vw;
     }
-
 #top-container #jasfile .instruction pre {
                 margin: 0;
             }
-
-#top-container #jasfile .selected {
-            background-color: red;
-            color: white;
-        }
-
 #top-container #jasfile #buttons {
             padding: 1vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
         }
-
 #top-container #jasfile #buttons > button {
                 width: 5vw;
                 cursor: pointer;
             }
-
 #top-container #content-container {
         text-align: center;
         width: 75vw;
-        margin-top: 5vh;
-        height: 95vh;
+        margin-top: 1vh;
+        height: 99vh;
     }
-
+#top-container #content-container abbr {
+            border-bottom: none !important;
+            cursor: help;
+            text-decoration: none !important;
+        }
 #top-container #content-container #key {
             text-align: center;
             align-items: center;
-            height: 3vh;
+            height: 5vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
+            
         }
-
-#top-container #content-container #key > div {
+#top-container #content-container #key div {
                 padding: 1vh;
             }
-
+#top-container #content-container #binary {
+            margin-top: 1vh;
+            height: 5vh;
+        }
+#top-container #content-container #binary .magic {
+                color: purple;
+            }
+#top-container #content-container #binary .constant {
+                color: red;
+            }
+#top-container #content-container #binary .text {
+                color: blue;
+            }
+#top-container #content-container #binary abbr:hover {
+                background-color: black;
+            }
 #top-container #content-container #page-container {
-            height: 82vh;
+            height: 80vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
         }
-
 #top-container #content-container #page-container > div {
                 width: 10vw;
                 display: flex;
                 flex-direction: column-reverse;
                 justify-content: flex-start;
             }
-
 #top-container #content-container #page-container > div > div {
                     border: 2px solid black;
                     border-bottom: 0;
@@ -92,11 +102,9 @@ body {
                     justify-content: space-between;
                     background-color: white;
                 }
-
 #top-container #content-container #stacklist div {
-                width: 15vw;
+                width: 11vw;
             }
-
 #top-container #content-container #stacklist {
             border-top: 3px solid black;
             padding: 1vh 0;

@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // loadPage("instruction-1");
     load_buttons();
     load_instructions();
-    document.getElementById(`inst-4`).classList.add("selected");
+    load_binary();
+    add_selected(`inst-4`);
     loadPage("inst-4")
 });
 
@@ -35,10 +36,26 @@ function load_instructions() {
     let container = document.querySelector("#jasfile");
     for (let i = 0; i < jas.length; i++) {
         let instruction_div = document.createElement("div");
-        instruction_div.classList.add("instruction")
-        instruction_div.id = `inst-${i + 1}`;
-        instruction_div.innerHTML = `<pre>${i + 1}     ${jas[i]}<pre>`
+        instruction_div.classList.add("instruction");
+        if (i == 8 || i == 23) {
+            instruction_div.classList.add(`inst-${i + 1}a`);
+            instruction_div.classList.add(`inst-${i + 1}b`);
+        } else {
+            instruction_div.classList.add(`inst-${i + 1}`);
+        }
+        instruction_div.innerHTML = `<pre>${i + 1}     ${jas[i]}<pre>`;
         container.appendChild(instruction_div);
+    }
+
+}
+function load_binary() {
+    let container = document.querySelector("#binary");
+    for (part of bin_parts) {
+        let abbr = document.createElement("abbr");
+        abbr.innerHTML = part.hex
+        abbr.title = part.abbr
+        abbr.classList = part.classes
+        container.appendChild(abbr);
     }
 }
 
@@ -78,16 +95,18 @@ function load_buttons() {
 }
 
 function highlight(curr_instruction) {
-    document.getElementsByClassName(`selected`)[0].classList.remove("selected");
-    if (curr_instruction == 5 || curr_instruction == 24) {
-        document.getElementById(`inst-${9}`).classList.add("selected");
-    } else if (curr_instruction == 14 || curr_instruction == 22) {
-        document.getElementById(`inst-${24}`).classList.add("selected");
-    } else {
-        document.getElementById(`inst-${order[curr_instruction]}`).classList.add("selected");
+    for (elem of document.getElementsByClassName(`selected`)) {
+        elem.classList.remove("selected");
     }
+    add_selected(`inst-${order[curr_instruction]}`)
 }
 
+
+function add_selected(className) {
+    for (elem of  document.getElementsByClassName(className)) {
+        elem.classList.add("selected");
+    }
+}
 
 var jas = [
     ".constant",
@@ -130,3 +149,148 @@ var jas = [
 ]
 
 var order = [4, 5, 6, 7, 8, "9a", 13, 17, 18, 19, 20, 21, 22, 23, "24a", 27, 31, 32, 33, 34, 35, 36, "24b", 25, "9b", 10, 11]
+
+
+
+var bin_parts = [{
+    hex: "1dea dfad ",
+    abbr: "Magic Number",
+    classes: "magic"
+}, {
+    hex: "0001 0000 ",
+    abbr: "Constant Pool Origin",
+    classes: "constant"
+}, {
+    hex: "0000 000c ",
+    abbr: "Constant Pool Size (12)",
+    classes: "constant"
+}, {
+    hex: "0000 cafe ",
+    abbr: "objref - used in INVOKEVIRTUAL",
+    classes: "constant inst-6 inst-24"
+}, {
+    hex: "0000 000e ",
+    abbr: "Location of add(...) method (offset bytes into program text)",
+    classes: "constant inst-9a"
+}, {
+    hex: "0000 0024 ",
+    abbr: "Location of times_two(...) method (offset bytes into program text",
+    classes: "constant"
+}, {
+    hex: "0000 0000 ",
+    abbr: "Text Origin",
+    classes: "text"
+}, {
+    hex: "0000 0030 ",
+    abbr: "Text Size",
+    classes: "text"
+}, {
+    hex: "1000 ",
+    abbr: "BIPUSH 0x10",
+    classes: "text inst-5"
+}, {
+    hex: "",
+    abbr: "",
+    classes: "text"
+}, {
+    hex: "1300 00",
+    abbr: "LDC_W objref (Loading a value for INVOKEVIRTUAL)",
+    classes: "text inst-6"
+}, {
+    hex: "10 10",
+    abbr: "BIPUSH 0x10",
+    classes: "text inst-7"
+}, {
+    hex: "10<br>20",
+    abbr: "BIPUSH 20",
+    classes: "text inst-8"
+}, {
+    hex: "b6 0001 ",
+    abbr: "INVOKEVIRTUAL (0001 is index of constant)",
+    classes: "text inst-9a"
+}, {
+    hex: "fd",
+    abbr: "OUT",
+    classes: "text inst-10"
+}, {
+    hex: "ff ",
+    abbr: "HALT",
+    classes: "text"
+}, {
+    hex: "0003 ",
+    abbr: "Number of Args for add(...)",
+    classes: "text inst-9a"
+}, {
+    hex: "0001 ",
+    abbr: "Area size / Local Vars for add(...)",
+    classes: "text inst-9a"
+}, {
+    hex: "1040 ",
+    abbr: "BIPUSH 40",
+    classes: "text inst-17"
+}, {
+    hex: "1300 00",
+    abbr: "LDC_W objref (Loading a value for INVOKEVIRTUAL)",
+    classes: "text inst-18"
+}, {
+    hex: "15 01",
+    abbr: "ILOAD a",
+    classes: "text inst-19"
+}, {
+    hex: "15 02",
+    abbr: "ILOAD b",
+    classes: "text inst-20"
+}, {
+    hex: "10 30",
+    abbr: "BIPUSH 30",
+    classes: "text inst-21"
+}, {
+    hex: "36 03",
+    abbr: "ISTORE c",
+    classes: "text inst-22"
+}, {
+    hex: "60 ",
+    abbr: "IADD",
+    classes: "text inst-23"
+}, {
+    hex: "b600 02",
+    abbr: "INVOKEVIRTUAL (0002 is index of constant)",
+    classes: "text inst-24a"
+}, {
+    hex: "ac ",
+    abbr: "IRETURN",
+    classes: "text inst-25"
+}, {
+    hex: "0002 ",
+    abbr: "Number of Args for add(...)",
+    classes: "text inst-24a"
+}, {
+    hex: "0001 ",
+    abbr: "Area size / Local Vars for add(...)",
+    classes: "text inst-24a"
+}, {
+    hex: "1501 ",
+    abbr: "ILOAD x",
+    classes: "text inst-31"
+}, {
+    hex: "59",
+    abbr: "DUP",
+    classes: "text inst-32"
+}, {
+    hex: "59 ",
+    abbr: "DUP",
+    classes: "text inst-33"
+}, {
+    hex: "3602 ",
+    abbr: "ISTORE y",
+    classes: "text inst-34"
+}, {
+    hex: "60",
+    abbr: "IADD",
+    classes: "text inst-35"
+}, {
+    hex: "ac",
+    abbr: "IRETURN",
+    classes: "text inst-36"
+},
+]
