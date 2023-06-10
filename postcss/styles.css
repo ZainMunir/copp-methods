@@ -57,6 +57,7 @@ body {
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
+                    background-color: white;
                 }
             }
         }
@@ -77,11 +78,22 @@ body {
 }
 
 .both {
-    background-color: lightgreen;
+    background-color: lightgreen !important; 
+   
 }
-.base {
-    background-color: palegoldenrod;
+.lv {
+    background-color: palegoldenrod !important;   
 }
 .sp {
-    background-color: lightblue;
+    background-color: lightblue !important;
+}
+.local {
+    background-color: lightcoral !important;
+}
+.param {   
+    background-color: orange !important;
+}
+.changed {
+    font-weight: bold;
+    /* color: ; */
 }

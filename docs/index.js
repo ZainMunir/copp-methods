@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     load_buttons();
     load_instructions();
     document.getElementById(`inst-4`).classList.add("selected");
-    loadPage("inst-19")
+    loadPage("inst-4")
 });
 
 // a function to load insert a html page into the #content-container and load
@@ -80,9 +80,9 @@ function load_buttons() {
 function highlight(curr_instruction) {
     document.getElementsByClassName(`selected`)[0].classList.remove("selected");
     if (curr_instruction == 5 || curr_instruction == 23) {
-        document.getElementById(`inst-${8}`).classList.add("selected");
+        document.getElementById(`inst-${9}`).classList.add("selected");
     } else if (curr_instruction == 13 || curr_instruction == 21) {
-        document.getElementById(`inst-${22}`).classList.add("selected");
+        document.getElementById(`inst-${23}`).classList.add("selected");
     } else {
         document.getElementById(`inst-${order[curr_instruction]}`).classList.add("selected");
     }
