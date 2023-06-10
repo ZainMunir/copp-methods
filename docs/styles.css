@@ -32,8 +32,21 @@ body {
             }
 
 #top-container #jasfile .selected {
-            background-color: pink;
+            background-color: red;
+            color: white;
         }
+
+#top-container #jasfile #buttons {
+            padding: 1vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+#top-container #jasfile #buttons > button {
+                width: 5vw;
+                cursor: pointer;
+            }
 
 #top-container #content-container {
         text-align: center;
@@ -42,8 +55,21 @@ body {
         height: 95vh;
     }
 
+#top-container #content-container #key {
+            text-align: center;
+            align-items: center;
+            height: 3vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+#top-container #content-container #key > div {
+                padding: 1vh;
+            }
+
 #top-container #content-container #page-container {
-            height: 85vh;
+            height: 82vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;

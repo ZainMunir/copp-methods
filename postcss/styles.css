@@ -30,7 +30,18 @@ body {
             }
         }
         .selected {
-            background-color: pink;
+            background-color: red;
+            color: white;
+        }
+        #buttons {
+            padding: 1vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            > button {
+                width: 5vw;
+                cursor: pointer;
+            }
         }
     }   
 
@@ -39,8 +50,20 @@ body {
         width: 75vw;
         margin-top: 5vh;
         height: 95vh;
+
+        #key {
+            text-align: center;
+            align-items: center;
+            height: 3vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            > div {
+                padding: 1vh;
+            }
+        }
         #page-container {
-            height: 85vh;
+            height: 82vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
