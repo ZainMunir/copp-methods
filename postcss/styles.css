@@ -81,6 +81,7 @@ body {
             }
             abbr:hover {
                 background-color: black;
+                color: white;
             }
         }
         #page-container {

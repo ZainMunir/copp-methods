@@ -79,6 +79,7 @@ body {
             }
 #top-container #content-container #binary-section abbr:hover {
                 background-color: black;
+                color: white;
             }
 #top-container #content-container #page-container {
             height: 77vh;
