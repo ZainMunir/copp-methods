@@ -67,10 +67,9 @@ body {
             }
             
         }
-        #binary {
+        #binary-section {
             margin-top: 1vh;
-            height: 5vh;
-
+            height: 8vh;
             .magic {
                 color: purple;
             }
@@ -85,7 +84,7 @@ body {
             }
         }
         #page-container {
-            height: 80vh;
+            height: 77vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;

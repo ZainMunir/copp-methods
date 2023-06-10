@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    // change this index to the index of your page to get yours to load first
-    // loadPage("instruction-1");
     load_buttons();
     load_instructions();
     load_binary();
@@ -8,8 +6,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     loadPage("inst-4")
 });
 
-// a function to load insert a html page into the #content-container and load
-// the javascript file for that html page
+// a function to load insert a html page into the #content-container
 function loadPage(pageName) {
     const element = document.querySelector("#page-container");
     fetch(`pages/${pageName}.html`)
@@ -17,10 +14,6 @@ function loadPage(pageName) {
         .then(data => {
             element.innerHTML = data;
         });
-
-    // const script = document.createElement("script");
-    // script.src = `pages/${pageName}.js`;
-    // element.appendChild(script);
 }
 
 // this function keeps checking if an element exists and returns that element
@@ -54,7 +47,7 @@ function load_binary() {
         let abbr = document.createElement("abbr");
         abbr.innerHTML = part.hex
         abbr.title = part.abbr
-        abbr.classList = part.classes
+        abbr.classList = part.classes//.split(" ")[0]
         container.appendChild(abbr);
     }
 }
@@ -78,7 +71,7 @@ function load_buttons() {
     })
 
     let next_button = document.createElement("button");
-    next_button.innerHTML = "Next"
+    next_button.innerHTML = "Next";
 
     next_button.addEventListener("click", () => {
         curr_instruction += 1
@@ -90,12 +83,23 @@ function load_buttons() {
         highlight(curr_instruction);
     })
 
+    let reset_button = document.createElement("button");
+    reset_button.innerHTML = "Reset";
+    reset_button.addEventListener("click", () => {
+        curr_instruction = 0
+        prev_button.disabled = true;
+        next_button.disabled = false;
+        loadPage(`inst-${4}`);
+        highlight(0);
+    })
     container.appendChild(prev_button);
     container.appendChild(next_button);
+    container.appendChild(reset_button);
 }
 
 function highlight(curr_instruction) {
-    for (elem of document.getElementsByClassName(`selected`)) {
+    const elements = Array.from(document.getElementsByClassName("selected"));
+    for (const elem of elements) {
         elem.classList.remove("selected");
     }
     add_selected(`inst-${order[curr_instruction]}`)
@@ -103,7 +107,8 @@ function highlight(curr_instruction) {
 
 
 function add_selected(className) {
-    for (elem of  document.getElementsByClassName(className)) {
+    const elements = Array.from(document.getElementsByClassName(className));
+    for (elem of elements) {
         elem.classList.add("selected");
     }
 }
@@ -188,11 +193,7 @@ var bin_parts = [{
     hex: "1000 ",
     abbr: "BIPUSH 0x10",
     classes: "text inst-5"
-}, {
-    hex: "",
-    abbr: "",
-    classes: "text"
-}, {
+},{
     hex: "1300 00",
     abbr: "LDC_W objref (Loading a value for INVOKEVIRTUAL)",
     classes: "text inst-6"

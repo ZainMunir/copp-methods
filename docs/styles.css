@@ -64,24 +64,24 @@ body {
 #top-container #content-container #key div {
                 padding: 1vh;
             }
-#top-container #content-container #binary {
+#top-container #content-container #binary-section {
             margin-top: 1vh;
-            height: 5vh;
+            height: 8vh;
         }
-#top-container #content-container #binary .magic {
+#top-container #content-container #binary-section .magic {
                 color: purple;
             }
-#top-container #content-container #binary .constant {
+#top-container #content-container #binary-section .constant {
                 color: red;
             }
-#top-container #content-container #binary .text {
+#top-container #content-container #binary-section .text {
                 color: blue;
             }
-#top-container #content-container #binary abbr:hover {
+#top-container #content-container #binary-section abbr:hover {
                 background-color: black;
             }
 #top-container #content-container #page-container {
-            height: 80vh;
+            height: 77vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
