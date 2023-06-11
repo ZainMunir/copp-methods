@@ -26,7 +26,7 @@ body {
 #top-container #jasfile {
         height: 100%;
         margin-left: 1vw;
-        font-size: 1.9vh;
+        font-size: 1.7vh;
         width: 25vw;
     }
 #top-container #jasfile .instruction pre {
@@ -96,7 +96,7 @@ body {
                 justify-content: flex-start;
             }
 #top-container #content-container #page-container > div > div {
-                    border: 2px solid black;
+                    border: 0.3vh solid black;
                     border-bottom: 0;
                     padding: 0.5vh;
                     font-size: 3vh;

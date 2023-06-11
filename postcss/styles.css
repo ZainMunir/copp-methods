@@ -26,7 +26,7 @@ body {
     #jasfile {
         height: 100%;
         margin-left: 1vw;
-        font-size: 1.9vh;
+        font-size: 1.7vh;
         width: 25vw;
         .instruction {
             pre {
@@ -97,7 +97,7 @@ body {
                 flex-direction: column-reverse;
                 justify-content: flex-start;
                 > div {
-                    border: 2px solid black;
+                    border: 0.3vh solid black;
                     border-bottom: 0;
                     padding: 0.5vh;
                     font-size: 3vh;
