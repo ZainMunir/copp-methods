@@ -3,121 +3,130 @@
     margin: 0;
 }
 
-    * h1 {
-        font-size: 5vh;
-        margin-bottom: 2vh;
-    }
-body {
-    background: lightgrey;
-}
-.selected {
-    background-color: red;
-    color: white !important;
-}
 #top-container {
+    background: lightgrey;
+
     height: 100vh;
     width: 100vw;
-    font-size: 2vh;
+    font-size: 1.3rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
 }
+
 #top-container #jasfile {
         height: 100%;
         margin-left: 1vw;
-        font-size: 1.7vh;
+        font-size: 0.8rem;
         width: 25vw;
     }
+
 #top-container #jasfile .instruction pre {
                 margin: 0;
             }
+
 #top-container #jasfile #buttons {
             padding: 1vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
         }
+
 #top-container #jasfile #buttons > button {
-                font-size: 2vh ;
-                width: 5vw;
+                width: 5.5vw;
                 cursor: pointer;
                 border-width: 0.2vh;
             }
+
 #top-container #content-container {
         text-align: center;
         width: 75vw;
-        margin-top: 1vh;
-        height: 99vh;
+        margin: 1vh 0;
+        height: 98vh;
     }
+
 #top-container #content-container abbr {
             border-bottom: none !important;
             cursor: help;
             text-decoration: none !important;
         }
+
 #top-container #content-container #header {
             display: flex;
             flex-direction: row;
             justify-content: space-around;
         }
+
 #top-container #content-container #header #pc {
                 width: 10%;
             }
-#top-container #content-container #key {
-            text-align: center;
-            align-items: center;
-            height: 5vh;
-            width: 90%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            
-        }
-#top-container #content-container #key div {
-                padding: 1vh;
+
+#top-container #content-container #header #key {
+                text-align: center;
+                align-items: center;
+                height: 5vh;
+                width: 90%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                
             }
+
+#top-container #content-container #header #key div {
+                    padding: 1vh;
+                }
+
 #top-container #content-container #binary-section {
             margin-top: 1vh;
-            height: 8vh;
+            height: 10vh;
         }
+
 #top-container #content-container #binary-section .magic {
                 color: purple;
             }
+
 #top-container #content-container #binary-section .constant {
                 color: red;
             }
+
 #top-container #content-container #binary-section .text {
                 color: blue;
             }
+
 #top-container #content-container #binary-section abbr:hover {
                 background-color: black;
                 color: white;
             }
+
 #top-container #content-container #page-container {
-            height: 80vh;
+            height: 78vh;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
         }
+
 #top-container #content-container #page-container > div {
-                width: 10vw;
+                width: 12vw;
                 display: flex;
                 flex-direction: column-reverse;
                 justify-content: flex-start;
             }
+
 #top-container #content-container #page-container > div > div {
                     border: 0.3vh solid black;
                     border-bottom: 0;
                     padding: 0.5vh;
-                    font-size: 3vh;
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
                     background-color: white;
                 }
+
 #top-container #content-container #stacklist div {
-                width: 11vw;
+                width: 17vw;
             }
+
 #top-container #content-container #stacklist {
             border-top: 0.3vh solid black;
             padding: 1vh 0 0 0;
@@ -130,7 +139,6 @@ body {
 
 .both {
     background-color: lightgreen !important; 
-   
 }
 .lv {
     background-color: palegoldenrod !important;   
@@ -149,5 +157,8 @@ body {
 }
 .changed {
     font-weight: bold;
-    /* color: ; */
+}
+.selected {
+    background-color: red;
+    color: white !important;
 }
