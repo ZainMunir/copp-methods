@@ -111,6 +111,7 @@ function highlight(curr_instruction) {
         elem.classList.remove("selected");
     }
     add_selected(`inst-${order[curr_instruction]}`)
+    document.getElementById("pc").innerHTML = pc[curr_instruction];
 }
 
 
@@ -162,7 +163,7 @@ var jas = [
 ]
 
 var order = [4, 5, 6, 7, 8, "9a", 13, 17, 18, 19, 20, 21, 22, 23, "24a", 27, 31, 32, 33, 34, 35, 36, "24b", 25, "9b", 10, 11]
-
+var pc = [0, 0, 2, 5, 7, 9, 18, 18, 20, 23, 25, 27, 29, 31, 32, 40, 40, 42, 43, 44, 46, 47, 32, 35, 9, 12, 13]
 
 
 var bin_parts = [{

@@ -111,6 +111,7 @@ function highlight(curr_instruction) {
         elem.classList.remove("selected");
     }
     add_selected(`inst-${order[curr_instruction]}`)
+    document.getElementById("pc").innerHTML = pc[curr_instruction];
 }
 
 
@@ -171,6 +172,7 @@ var jas = [
 ]
 
 var order = [4, 11, 12, 13, 14, 15, 16, "17a", 22, 26, 27, 28, 29, 30, 31, 32, "33a", 36, 40, 41, 42, 43, 44, 45, "33b", 34, "17b", 18, 19, 20]
+var pc = [0, 0, 2, 3, 5, 8, 10, 12, 22, 22, 24, 27, 29, 31, 33, 35, 36, 44, 44, 46, 47, 48, 50, 51, 36, 39, 12, 15, 16, 17]
 
 var bin_parts = [{
     hex: "1dea dfad ",
@@ -212,11 +214,11 @@ var bin_parts = [{
     hex: "59",
     abbr: "DUP",
     classes: "text inst-12"
-},{
+}, {
     hex: "36 02",
     abbr: "ISTORE jack",
     classes: "text inst-13"
-},  {
+}, {
     hex: "13 0000 ",
     abbr: "LDC_W objref (Loading a value for INVOKEVIRTUAL)",
     classes: "text inst-14"
