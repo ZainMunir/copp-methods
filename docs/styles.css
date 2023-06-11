@@ -144,6 +144,9 @@ body {
 .param {   
     background-color: orange !important;
 }
+.lvsquared {
+    background-color: crimson !important;
+}
 .changed {
     font-weight: bold;
     /* color: ; */

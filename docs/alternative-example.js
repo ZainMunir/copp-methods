@@ -133,7 +133,7 @@ var jas = [
     "    jack",
     "    atze",
     ".end-var",
-    "    BIPUSH 0x50",
+    "    BIPUSH 0x70",
     "    DUP",
     "    ISTORE jack",
     "    LDC_W objref",
@@ -207,8 +207,8 @@ var bin_parts = [{
     abbr: "Text Size",
     classes: "text"
 }, {
-    hex: "1050 ",
-    abbr: "BIPUSH 0x50",
+    hex: "1070 ",
+    abbr: "BIPUSH 0x70",
     classes: "text inst-11"
 }, {
     hex: "59",
