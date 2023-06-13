@@ -3,27 +3,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     load_instructions();
     load_binary();
     add_selected(`inst-4`);
-    loadPage("inst-4")
+    load_stacks(0);
 });
-
-// a function to load insert a html page into the #content-container
-function loadPage(pageName) {
-    const element = document.querySelector("#page-container");
-    fetch(`pages1/${pageName}.html`)
-        .then(response => response.text())
-        .then(data => {
-            element.innerHTML = data;
-        });
-}
-
-// this function keeps checking if an element exists and returns that element
-// if it does exist
-async function isElementLoaded(element) {
-    while (document.querySelector(element) === null) {
-        await new Promise(resolve => requestAnimationFrame(resolve));
-    }
-    return document.querySelector(element);
-};
 
 function load_instructions() {
     let container = document.querySelector("#jasfile");
@@ -66,7 +47,7 @@ function load_buttons() {
             prev_button.disabled = true;
         }
         next_button.disabled = false;
-        loadPage(`inst-${order[curr_instruction]}`);
+        load_stacks(curr_instruction);
         highlight(curr_instruction);
     })
 
@@ -79,7 +60,7 @@ function load_buttons() {
             next_button.disabled = true;
         }
         prev_button.disabled = false;
-        loadPage(`inst-${order[curr_instruction]}`);
+        load_stacks(curr_instruction);
         highlight(curr_instruction);
     })
 
@@ -89,7 +70,7 @@ function load_buttons() {
         curr_instruction = 0
         prev_button.disabled = true;
         next_button.disabled = false;
-        loadPage(`inst-${4}`);
+        load_stacks(curr_instruction);
         highlight(0);
     })
 
@@ -99,10 +80,7 @@ function load_buttons() {
         window.location.href = 'alternative-example.html';
     })
 
-    container.appendChild(prev_button);
-    container.appendChild(next_button);
-    container.appendChild(reset_button);
-    container.appendChild(alternative_button);
+    container.append(prev_button, next_button, reset_button, alternative_button);
 }
 
 function highlight(curr_instruction) {
@@ -121,6 +99,36 @@ function add_selected(className) {
         elem.classList.add("selected");
     }
 }
+
+function load_stacks(curr_instruction) {
+    let container = document.getElementById("page-container");
+    let current = stacks[curr_instruction];
+    let stack_1 = document.createElement("div");
+    let stack_2 = document.createElement("div");
+    let stack_3 = document.createElement("div");
+    for (let i = 0; i < current.length; i++) {
+        let div = document.createElement("div");
+        let number = document.createElement("div");
+        number.innerHTML = i;
+        let value = document.createElement("div");
+        value.innerHTML = current[i].value;
+        div.classList = current[i].classes;
+        div.append(number, value);
+        stack_1.append(div);
+        if (current[i].local_add) {
+            stack_2.append(div.cloneNode(true));
+        }
+        if (current[i].local_x2) {
+            stack_3.append(div.cloneNode(true));
+        }
+    }
+    container.innerHTML = "";
+    container.append(stack_1, stack_2, stack_3)
+}
+
+
+var order = [4, 5, 6, 7, 8, "9a", 13, 17, 18, 19, 20, 21, 22, 23, "24a", 27, 31, 32, 33, 34, 35, 36, "24b", 25, "9b", 10, 11]
+var pc = [0, 0, 2, 5, 7, 9, 18, 18, 20, 23, 25, 27, 29, 31, 32, 40, 40, 42, 43, 44, 46, 47, 32, 35, 9, 12, 13]
 
 var jas = [
     ".constant",
@@ -161,10 +169,6 @@ var jas = [
     "    IRETURN",
     ".end-method"
 ]
-
-var order = [4, 5, 6, 7, 8, "9a", 13, 17, 18, 19, 20, 21, 22, 23, "24a", 27, 31, 32, 33, 34, 35, 36, "24b", 25, "9b", 10, 11]
-var pc = [0, 0, 2, 5, 7, 9, 18, 18, 20, 23, 25, 27, 29, 31, 32, 40, 40, 42, 43, 44, 46, 47, 32, 35, 9, 12, 13]
-
 
 var bin_parts = [{
     hex: "1dea dfad ",
@@ -304,3 +308,1130 @@ var bin_parts = [{
     classes: "text inst-36"
 },
 ]
+
+var stacks = [[], [{
+    value: "0x00",
+    classes: "both changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "lv changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "lv",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "lv",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "lv",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x30",
+    classes: "sp",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 11",
+    classes: "lv changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 11",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 11",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 11",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 11",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x30",
+    classes: "local changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 11",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x30",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x60",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 11",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x30",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x60",
+    classes: "sp",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x60",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 5",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x60",
+    classes: "sp",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "lv changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x60",
+    classes: "sp changed ",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "both changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x00",
+    classes: "both",
+    local_add: false,
+    local_x2: false,
+}]]
