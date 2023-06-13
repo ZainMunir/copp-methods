@@ -306,8 +306,7 @@ var bin_parts = [{
     hex: "ac",
     abbr: "IRETURN",
     classes: "text inst-36"
-},
-]
+},]
 
 var stacks = [[], [{
     value: "0x00",

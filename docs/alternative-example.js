@@ -3,27 +3,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     load_instructions();
     load_binary();
     add_selected(`inst-4`);
-    loadPage("inst-4")
+    load_stacks(0);
 });
-
-// a function to load insert a html page into the #content-container
-function loadPage(pageName) {
-    const element = document.querySelector("#page-container");
-    fetch(`pages2/${pageName}.html`)
-        .then(response => response.text())
-        .then(data => {
-            element.innerHTML = data;
-        });
-}
-
-// this function keeps checking if an element exists and returns that element
-// if it does exist
-async function isElementLoaded(element) {
-    while (document.querySelector(element) === null) {
-        await new Promise(resolve => requestAnimationFrame(resolve));
-    }
-    return document.querySelector(element);
-};
 
 function load_instructions() {
     let container = document.querySelector("#jasfile");
@@ -39,7 +20,6 @@ function load_instructions() {
         instruction_div.innerHTML = `<pre>${i + 1}     ${jas[i]}<pre>`;
         container.appendChild(instruction_div);
     }
-
 }
 function load_binary() {
     let container = document.querySelector("#binary");
@@ -66,7 +46,7 @@ function load_buttons() {
             prev_button.disabled = true;
         }
         next_button.disabled = false;
-        loadPage(`inst-${order[curr_instruction]}`);
+        load_stacks(curr_instruction);
         highlight(curr_instruction);
     })
 
@@ -79,7 +59,7 @@ function load_buttons() {
             next_button.disabled = true;
         }
         prev_button.disabled = false;
-        loadPage(`inst-${order[curr_instruction]}`);
+        load_stacks(curr_instruction);
         highlight(curr_instruction);
     })
 
@@ -89,7 +69,7 @@ function load_buttons() {
         curr_instruction = 0
         prev_button.disabled = true;
         next_button.disabled = false;
-        loadPage(`inst-${4}`);
+        load_stacks(curr_instruction);
         highlight(0);
     })
 
@@ -99,10 +79,7 @@ function load_buttons() {
         window.location.href = 'index.html';
     })
 
-    container.appendChild(prev_button);
-    container.appendChild(next_button);
-    container.appendChild(reset_button);
-    container.appendChild(alternative_button);
+    container.append(prev_button, next_button, reset_button, alternative_button);
 }
 
 function highlight(curr_instruction) {
@@ -120,6 +97,57 @@ function add_selected(className) {
     for (elem of elements) {
         elem.classList.add("selected");
     }
+}
+
+function load_stacks(curr_instruction) {
+    let container = document.getElementById("page-container");
+    let current = stacks[curr_instruction];
+
+    let stack_1 = document.createElement("div");
+    let stack_2 = document.createElement("div");
+    let stack_3 = document.createElement("div");
+    for (let i = 0; i < current.length; i++) {
+        let div = document.createElement("div");
+        let number = document.createElement("div");
+        number.innerHTML = i + 256;
+        let value = document.createElement("div");
+        value.innerHTML = current[i].value;
+        div.classList = current[i].classes;
+        div.append(number, value);
+        stack_1.append(div);
+        if (current[i].local_add) {
+            stack_2.append(div.cloneNode(true));
+        }
+        if (current[i].local_x2) {
+            stack_3.append(div.cloneNode(true));
+        }
+    }
+    let stack_0 = load_main(curr_instruction)
+    container.innerHTML = "";
+    container.append(stack_0, stack_1, stack_2, stack_3)
+}
+
+function load_main(curr_instruction) {
+    if (curr_instruction > 9 && curr_instruction < 25) {
+        return document.getElementById("stack-0").cloneNode(true);
+    }
+    if (curr_instruction > 24) {
+        curr_instruction -= 16
+    }
+    let current = main_locals[curr_instruction];
+    let stack_0 = document.createElement("div");
+    stack_0.id = "stack-0";
+    for (let i = 0; i < current.length; i++) {
+        let div = document.createElement("div");
+        let number = document.createElement("div");
+        number.innerHTML = current[i].index;
+        let value = document.createElement("div");
+        value.innerHTML = current[i].value;
+        div.classList = current[i].classes;
+        div.append(number, value);
+        stack_0.append(div);
+    }
+    return stack_0;
 }
 
 var order = [4, 11, 12, 13, 14, 15, 16, "17a", 22, 26, 27, 28, 29, 30, 31, 32, "33a", 36, 40, 41, 42, 43, 44, 45, "33b", 34, "17b", 18, 19, 20]
@@ -322,5 +350,2098 @@ var bin_parts = [{
     hex: "ac",
     abbr: "IRETURN",
     classes: "text inst-45"
-},
+},]
+
+var main_locals = [
+    [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "sp"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local changed"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local changed"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "local changed"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared changed"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "local"
+    }],
+    [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "sp changed"
+    }], [{
+        value: "0x00",
+        index: "0",
+        classes: "lvsquared"
+    }, {
+        value: "0x00",
+        index: "1",
+        classes: "local"
+    }, {
+        value: "0x70",
+        index: "2",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "3",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "4",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "5",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "...",
+        index: ".",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "253",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "254",
+        classes: "local"
+    }, {
+        value: "0x00",
+        index: "255",
+        classes: "sp"
+    }]]
+
+var stacks = [[], [{
+    value: "0x70",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x70",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "changed",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp ",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x00",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x10",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x20",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0xCAFE",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x30",
+    classes: "sp",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 267",
+    classes: "lv changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 267",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 267",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 267",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x00",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 267",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x30",
+    classes: "local changed",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x30",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 267",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x30",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x60",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(LV) 267",
+    classes: "lv",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(x) 0x30",
+    classes: "param",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "(y) 0x30",
+    classes: "local",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: false,
+    local_x2: true,
+}, {
+    value: "0x60",
+    classes: "sp",
+    local_add: false,
+    local_x2: true,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv changed",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x60",
+    classes: "sp changed",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "(LV) 261",
+    classes: "lv",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(a) 0x10",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(b) 0x20",
+    classes: "param",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "(c) 0x30",
+    classes: "local",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller PC",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "Caller LV",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x40",
+    classes: "",
+    local_add: true,
+    local_x2: false,
+}, {
+    value: "0x60",
+    classes: "sp",
+    local_add: true,
+    local_x2: false,
+}], [{
+    value: "0x70",
+    classes: "",
+    local_add: false,
+    local_x2: false,
+}, {
+    value: "0x60",
+    classes: "sp changed ",
+    local_add: false,
+    local_x2: false,
+}], [{
+    value: "0x10",
+    classes: "sp changed",
+    local_add: false,
+    local_x2: false,
+}], [], []
 ]
